@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SDL2/SDL.h>
 
 #define WINDOW_TITLE "InvadersPP"
@@ -26,6 +25,11 @@ int main(void)
 	SDL_SetWindowTitle(window, WINDOW_TITLE);
 
 	while (is_running) {
+		// Render screen black
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+		SDL_RenderClear(renderer);
+		SDL_RenderPresent(renderer);
+
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
