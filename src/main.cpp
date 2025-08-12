@@ -8,20 +8,22 @@
 int main(void)
 {
 	bool is_running = true;
+	SDL_Window *window = NULL;
+	SDL_Renderer *renderer = NULL;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		SDL_Log("Failed to init sdl: %s\n", SDL_GetError());
 		return 1;
 	}
 
-	SDL_Window *window = SDL_CreateWindow(WINDOW_TITLE,
-                              SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-							  WINDOW_WIDTH, WINDOW_HEIGHT,
-							  0);
-	if (window == NULL) {
-		SDL_Log("Failed to create window: %s\n", SDL_GetError());
+	if (SDL_CreateWindowAndRenderer(
+        WINDOW_WIDTH, WINDOW_HEIGHT, 0,
+        &window, &renderer) < 0) {
+		SDL_Log("Failed to create window and renderer: %s\n", SDL_GetError());
 		return 1;
 	}
+
+	SDL_SetWindowTitle(window, WINDOW_TITLE);
 
 	while (is_running) {
 		SDL_Event event;
@@ -35,5 +37,6 @@ int main(void)
 	}
 
 	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
 	return 0;
 }
