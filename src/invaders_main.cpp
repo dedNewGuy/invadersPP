@@ -43,6 +43,20 @@ int main(void)
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+						case SDLK_LEFT:
+							SDL_Log("I pressed left keys");
+							break;
+					}
+					break;
+				case SDL_KEYUP:
+					switch (event.key.keysym.sym) {
+						case SDLK_LEFT:
+							SDL_Log("I release left keys");
+							break;
+					}
+					break;
 				case SDL_QUIT:
 					is_running = false;
 					break;
