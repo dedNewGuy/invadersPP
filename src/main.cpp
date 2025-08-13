@@ -24,10 +24,20 @@ int main(void)
 
 	SDL_SetWindowTitle(window, WINDOW_TITLE);
 
+	// Defined Rect
+	SDL_Rect rect = {
+		10, 20,
+		100, 50
+	};
+
 	while (is_running) {
 		// Render screen black
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
+
+		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
+		SDL_RenderDrawRect(renderer, &rect);
+
 		SDL_RenderPresent(renderer);
 
 		SDL_Event event;
