@@ -1,8 +1,12 @@
+#include <iostream>
 #include <SDL2/SDL.h>
 
 #define WINDOW_TITLE "InvadersPP"
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
+
+#define FPS 60
+#define FRAMERATE (1000 / FPS)
 
 int main(void)
 {
@@ -30,26 +34,44 @@ int main(void)
 	bool key_right_pressed = false;
 
 	// Defined Rect
-	SDL_Rect spaceship = {
+	SDL_FRect spaceship = {
 		375, 525,
 		50, 50
 	};
+	float speed = 0;
+
+	// Time variable
+	int last_frame_time = 0;
+	float deltatime = 0;
 
 	while (is_running) {
+		int waiting_time = FRAMERATE - (SDL_GetTicks() - last_frame_time);
+		if (waiting_time > 0 && waiting_time <= FRAMERATE)
+			SDL_Delay(waiting_time);
+		deltatime = (SDL_GetTicks() - last_frame_time) / 1000.0f;
+		last_frame_time = SDL_GetTicks();
+
 		// Rendering
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x00);
-		SDL_RenderFillRect(renderer, &spaceship);
+		SDL_RenderFillRectF(renderer, &spaceship);
 
 		SDL_RenderPresent(renderer);
 
+		speed = 200 * deltatime;
+		SDL_Log("Spaceship x: %f\n", spaceship.x);
+		SDL_Log("Speed: %f\n", speed);
+		SDL_Log("Deltatime: %f\n", deltatime);
+		SDL_Log("key_left_pressed: %d\n", key_left_pressed);
+		SDL_Log("key_right_pressed: %d\n", key_right_pressed);
+
 		// Updating
 		if (key_left_pressed) {
-			spaceship.x -= 1;
+			spaceship.x -= speed;
 		} else if (key_right_pressed) {
-			spaceship.x += 1;
+			spaceship.x += speed;
 		}
 
 		// Polling input
