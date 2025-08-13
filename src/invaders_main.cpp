@@ -24,6 +24,11 @@ int main(void)
 
 	SDL_SetWindowTitle(window, WINDOW_TITLE);
 
+	// Key Pressed bool
+	bool key_up_pressed = false;
+	bool key_left_pressed = false;
+	bool key_right_pressed = false;
+
 	// Defined Rect
 	SDL_Rect spaceship = {
 		375, 525,
@@ -31,7 +36,7 @@ int main(void)
 	};
 
 	while (is_running) {
-		// Render screen black
+		// Rendering
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 
@@ -40,20 +45,40 @@ int main(void)
 
 		SDL_RenderPresent(renderer);
 
+		// Updating
+		if (key_left_pressed) {
+			spaceship.x -= 1;
+		} else if (key_right_pressed) {
+			spaceship.x += 1;
+		}
+
+		// Polling input
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_KEYDOWN:
 					switch (event.key.keysym.sym) {
 						case SDLK_LEFT:
-							SDL_Log("I pressed left keys");
+							key_left_pressed = true;
+							break;
+						case SDLK_RIGHT:
+							key_right_pressed = true;
+							break;
+						case SDLK_UP:
+							key_up_pressed = true;
 							break;
 					}
 					break;
 				case SDL_KEYUP:
 					switch (event.key.keysym.sym) {
 						case SDLK_LEFT:
-							SDL_Log("I release left keys");
+							key_left_pressed = false;
+							break;
+						case SDLK_RIGHT:
+							key_right_pressed = false;
+							break;
+						case SDLK_UP:
+							key_up_pressed = false;
 							break;
 					}
 					break;
