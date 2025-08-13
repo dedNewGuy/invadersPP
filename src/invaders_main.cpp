@@ -25,9 +25,9 @@ int main(void)
 	SDL_SetWindowTitle(window, WINDOW_TITLE);
 
 	// Defined Rect
-	SDL_Rect rect = {
-		10, 20,
-		100, 50
+	SDL_Rect spaceship = {
+		375, 525,
+		50, 50
 	};
 
 	while (is_running) {
@@ -35,8 +35,8 @@ int main(void)
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
-		SDL_RenderDrawRect(renderer, &rect);
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x00);
+		SDL_RenderFillRect(renderer, &spaceship);
 
 		SDL_RenderPresent(renderer);
 
