@@ -29,7 +29,12 @@ struct Bullet {
 	{
 		bullet_time_acc += deltatime;
 		for (int i = 0; i < bullet_count; ++i) {
+			if (bullet[i].w < 0) continue;
 			bullet[i].y -= speed * deltatime;
+			if (bullet[i].y < 0) {
+				bullet[i].w = -1; 
+				bullet_count--;
+			}
 		}
 	}
 
@@ -37,6 +42,7 @@ struct Bullet {
 	{
 		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
 		for (int i = 0; i < bullet_count; ++i) {
+			if (bullet[i].w < 0) continue;
 			SDL_RenderFillRectF(renderer, &bullet[i]);
 		}
 	}

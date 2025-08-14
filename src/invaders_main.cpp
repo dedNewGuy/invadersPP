@@ -74,6 +74,7 @@ int main(void)
 		SDL_Log("key_left_pressed: %d\n", key_left_pressed);
 		SDL_Log("key_right_pressed: %d\n", key_right_pressed);
 		SDL_Log("key_up_pressed: %d\n", key_up_pressed);
+		SDL_Log("Bullet count: %d\n", bullet.bullet_count);
 
 		// Updating
 		bullet.update(deltatime);	
