@@ -4,8 +4,9 @@
 #define MAX_BULLET 32
 
 struct Bullet {
-	SDL_FRect bullet[MAX_BULLET];
-	int bullet_count;
+	SDL_FRect bullet[MAX_BULLET]{};
+	int bullet_count = 0;
+	float speed = 200;
 
 	void add(SDL_FRect spaceship)
 	{
@@ -21,11 +22,17 @@ struct Bullet {
 		bullet[bullet_count++] = b;
 	}
 
-	void render(SDL_Renderer *renderer, float bullet_speed)
+	void update(float deltatime)
+	{
+		for (int i = 0; i < bullet_count; ++i) {
+			bullet[i].y -= speed * deltatime;
+		}
+	}
+
+	void render(SDL_Renderer *renderer)
 	{
 		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
 		for (int i = 0; i < bullet_count; ++i) {
-			bullet[i].y -= bullet_speed;
 			SDL_RenderFillRectF(renderer, &bullet[i]);
 		}
 	}

@@ -44,7 +44,6 @@ int main(void)
 
 	// Defined bullet
 	Bullet bullet;
-	bullet.bullet_count = 0;
 
 	// Time variable
 	int last_frame_time = 0;
@@ -64,7 +63,7 @@ int main(void)
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x00);
 		SDL_RenderFillRectF(renderer, &spaceship);
 
-		bullet.render(renderer, speed);
+		bullet.render(renderer);
 
 		SDL_RenderPresent(renderer);
 
@@ -77,6 +76,8 @@ int main(void)
 		SDL_Log("key_up_pressed: %d\n", key_up_pressed);
 
 		// Updating
+		bullet.update(deltatime);	
+		
 		if (key_left_pressed) {
 			spaceship.x -= speed;
 		} else if (key_right_pressed) {
