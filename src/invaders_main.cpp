@@ -33,12 +33,16 @@ int main(void)
 	bool key_left_pressed = false;
 	bool key_right_pressed = false;
 
-	// Defined Rect
+	// Defined Spaceship
 	SDL_FRect spaceship = {
 		375, 525,
 		50, 50
 	};
 	float speed = 0;
+
+	// Defined bullet
+	SDL_FRect bullet = {0};
+	bool shoot = false;
 
 	// Time variable
 	int last_frame_time = 0;
@@ -58,6 +62,12 @@ int main(void)
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x00);
 		SDL_RenderFillRectF(renderer, &spaceship);
 
+		if (shoot) {
+			bullet.y -= speed;
+			SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
+			SDL_RenderFillRectF(renderer, &bullet);
+		}
+
 		SDL_RenderPresent(renderer);
 
 		speed = 200 * deltatime;
@@ -66,12 +76,21 @@ int main(void)
 		SDL_Log("Deltatime: %f\n", deltatime);
 		SDL_Log("key_left_pressed: %d\n", key_left_pressed);
 		SDL_Log("key_right_pressed: %d\n", key_right_pressed);
+		SDL_Log("key_up_pressed: %d\n", key_up_pressed);
 
 		// Updating
 		if (key_left_pressed) {
 			spaceship.x -= speed;
 		} else if (key_right_pressed) {
 			spaceship.x += speed;
+		} 
+
+		if (key_up_pressed) {
+			shoot = true;
+			bullet.x = spaceship.x + spaceship.w / 2;
+			bullet.y = spaceship.y;
+			bullet.w = 10;
+			bullet.h = 10;
 		}
 
 		// Polling input
