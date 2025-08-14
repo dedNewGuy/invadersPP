@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
+#include "invaders_bullet.hpp"
+
 #define WINDOW_TITLE "InvadersPP"
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -41,8 +43,8 @@ int main(void)
 	float speed = 0;
 
 	// Defined bullet
-	SDL_FRect bullet = {0};
-	bool shoot = false;
+	Bullet bullet;
+	bullet.bullet_count = 0;
 
 	// Time variable
 	int last_frame_time = 0;
@@ -62,11 +64,7 @@ int main(void)
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xff, 0x00);
 		SDL_RenderFillRectF(renderer, &spaceship);
 
-		if (shoot) {
-			bullet.y -= speed;
-			SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
-			SDL_RenderFillRectF(renderer, &bullet);
-		}
+		bullet.render(renderer, speed);
 
 		SDL_RenderPresent(renderer);
 
@@ -86,11 +84,7 @@ int main(void)
 		} 
 
 		if (key_up_pressed) {
-			shoot = true;
-			bullet.x = spaceship.x + spaceship.w / 2;
-			bullet.y = spaceship.y;
-			bullet.w = 10;
-			bullet.h = 10;
+			bullet.add(spaceship);
 		}
 
 		// Polling input
