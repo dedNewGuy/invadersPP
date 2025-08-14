@@ -85,7 +85,9 @@ int main(void)
 		} 
 
 		if (key_up_pressed) {
-			bullet.add(spaceship);
+			if (bullet.bullet_time_acc >= BULLET_COUNTDOWN) {
+				bullet.add(spaceship);
+			}
 		}
 
 		// Polling input

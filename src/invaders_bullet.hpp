@@ -2,11 +2,13 @@
 #include <SDL2/SDL.h>
 
 #define MAX_BULLET 32
+#define BULLET_COUNTDOWN 2 // 2 seconds
 
 struct Bullet {
 	SDL_FRect bullet[MAX_BULLET]{};
 	int bullet_count = 0;
 	float speed = 200;
+	float bullet_time_acc = 2;
 
 	void add(SDL_FRect spaceship)
 	{
@@ -20,10 +22,12 @@ struct Bullet {
 		};
 
 		bullet[bullet_count++] = b;
+		bullet_time_acc = 0;
 	}
 
 	void update(float deltatime)
 	{
+		bullet_time_acc += deltatime;
 		for (int i = 0; i < bullet_count; ++i) {
 			bullet[i].y -= speed * deltatime;
 		}
