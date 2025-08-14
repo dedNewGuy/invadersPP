@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 
 #define MAX_BULLET 32
-#define BULLET_COUNTDOWN 2 // 2 seconds
+#define BULLET_COUNTDOWN 1 // 2 seconds
 
 struct Bullet {
 	SDL_FRect bullet[MAX_BULLET]{};
@@ -21,15 +21,21 @@ struct Bullet {
 			10
 		};
 
-		bullet[bullet_count++] = b;
+		for (int i = 0; i < MAX_BULLET; ++i) {
+			if (bullet[i].w <= 0) {
+				bullet[i] = b;
+				bullet_count++;
+				break;
+			}
+		}
 		bullet_time_acc = 0;
 	}
 
 	void update(float deltatime)
 	{
 		bullet_time_acc += deltatime;
-		for (int i = 0; i < bullet_count; ++i) {
-			if (bullet[i].w < 0) continue;
+		for (int i = 0; i < MAX_BULLET; ++i) {
+			if (bullet[i].w <= 0) continue;
 			bullet[i].y -= speed * deltatime;
 			if (bullet[i].y < 0) {
 				bullet[i].w = -1; 
@@ -41,8 +47,8 @@ struct Bullet {
 	void render(SDL_Renderer *renderer)
 	{
 		SDL_SetRenderDrawColor(renderer, 0xff, 0x00, 0x00, 0x00);
-		for (int i = 0; i < bullet_count; ++i) {
-			if (bullet[i].w < 0) continue;
+		for (int i = 0; i < MAX_BULLET; ++i) {
+			if (bullet[i].w <= 0) continue;
 			SDL_RenderFillRectF(renderer, &bullet[i]);
 		}
 	}
